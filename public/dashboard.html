@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ozone Attendance — Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Employee Dashboard</h2>
+<button onclick="checkIn()">Check In</button>
+<button onclick="checkOut()">Check Out</button>
+<table border="1">
+<thead>
+<tr>
+<th>Date</th><th>Check In</th><th>Check Out</th>
+</tr>
+</thead>
+<tbody id="data"></tbody>
+</table>
+
+<script>
+const token = localStorage.getItem("token");
+async function checkIn(){
+  const res = await fetch("/checkin",{method:"POST",headers:{Authorization:token}});
+  alert(await res.text());
+}
+async function checkOut(){
+  const res = await fetch("/checkout",{method:"POST",headers:{Authorization:token}});
+  alert(await res.text());
+}
+async function load(){
+  const res = await fetch("/my-records",{headers:{Authorization:token}});
+  const data = await res.json();
+  const table = document.getElementById("data");
+  table.innerHTML="";
+  data.forEach(d=>{
+    table.innerHTML += `
+    <tr>
+      <td>${d.date}</td>
+      <td>${d.checkIn||"-"}</td>
+      <td>${d.checkOut||"-"}</td>
+    </tr>`;
+  });
+}
+load();
+</script>
+
+</body>
+</html>

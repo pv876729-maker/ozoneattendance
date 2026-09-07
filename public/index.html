@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ozone Attendance — Login</title>
+<style>
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #EEF0EA;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  div.box {
+    background: #FBFBF8;
+    border: 1px solid #D7D9D0;
+    border-radius: 3px;
+    padding: 32px;
+    width: 280px;
+  }
+  h2 { margin: 0 0 18px 0; font-size: 20px; }
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #D7D9D0;
+    border-radius: 3px;
+    font-size: 15px;
+    box-sizing: border-box;
+  }
+  button {
+    width: 100%;
+    padding: 11px;
+    background: #1B6E77;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    cursor: pointer;
+  }
+  button:hover { background: #124F56; }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Ozone Login</h2>
+<input id="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+</div>
+
+<script>
+async function login(){
+  const res = await fetch("/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      email:email.value,
+      password:password.value
+    })
+  });
+  const data = await res.json();
+  localStorage.setItem("token", data.token);
+  if(data.role==="admin"){
+    window.location="admin.html";
+  }else{
+    window.location="dashboard.html";
+  }
+}
+</script>
+
+</body>
+</html>
